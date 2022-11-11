@@ -31,7 +31,6 @@ services:
       - RUNDECK_JAAS_MODULES_1=PropertyFileLoginModule
       - RUNDECK_JAAS_FILE_FLAG=sufficient
     volumes:
-      - ./data:/home/rundeck/server/data
       - ./tests/ssh_client/id_rsa:/home/rundeck/.ssh/id_rsa
       - ./tests/ssh_client/id_rsa.pub:/home/rundeck/.ssh/id_rsa.pub
     ports:
@@ -55,7 +54,7 @@ services:
       - LDAP_DOMAIN=acme.com
       - LDAP_ADMIN_PASSWORD=AdminPass123
     volumes:
-      - ./ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom:rw
+      - ./tests/ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom:rw
     ports:
       - "389:389"
     command: --copy-service --loglevel debug
@@ -77,7 +76,7 @@ services:
       - CONSUL_HTTP_ADDR=http://consul:8500
       - CONSUL_LOAD_FROM=/seed.yml
     volumes:
-      - ./consul/seed.yml:/seed.yml:ro
+      - ./tests/consul/seed.yml:/seed.yml:ro
     links:
       - consul
   ssh:

@@ -7,18 +7,20 @@ docker compose up -d postgres ldap consul consul-seed ssh
 docker compose build && docker compose up rundeck
 ```
 
-# Default passwords for local docker compose
-# Static users:
-# admin:pass
-# bot:bot
+Default passwords for local docker compose
+==========================================
 
-# from LDAP:
-# Services
-# svc:svcpwd
-# rundeck:rundeckpwd
+* Static rundeck users:
+* admin:pass
+* bot:bot
 
-# Users:
-# userexec:userexecpwd
+* from LDAP:
+* Services
+* svc:svcpwd
+* rundeck:rundeckpwd
+
+* Users:
+* userexec:userexecpwd
 
 Create password
 ===============
