@@ -1,0 +1,4 @@
+---
+rundeck/admin_pass: BCRYPT:$2a$10$.9QOjPZK6Z2GxTh48A/MFe56dS.IJVE3cWMxxNogTqANdQKynErlK
+rundeck/bot_pass: BCRYPT:$2a$10$qCnBd4pyaics2JDAapWYq.4EHOHc/D/EV.G9wKoK8A..lO5ZzsAOm
+rundeck/server/name: docker-rundeck

@@ -1,0 +1,25 @@
+version: 1
+
+dn: ou=services,{{ LDAP_BASE_DN }}
+objectClass: organizationalUnit
+objectClass: top
+ou: services
+
+dn: cn=svc,ou=services,{{ LDAP_BASE_DN }}
+objectClass: inetOrgPerson
+objectClass: person
+objectClass: top
+cn: svc
+sn: My service
+uid: svc
+userPassword: {SSHA}51aPD6jmvdKPJDY0AUdhCSJR6MbiBcFVyzaYfA==
+
+dn: cn=rundeck,ou=services,{{ LDAP_BASE_DN }}
+objectClass: inetOrgPerson
+objectClass: person
+objectClass: top
+cn: rundeck
+sn: Rundeck
+uid: rundeck
+userPassword: {SSHA}q12CJ/tALpg25li2e5+yN7R1AOQynM7Z
+

@@ -1,0 +1,91 @@
+version: '3'
+
+services:
+  rundeck:
+    hostname: rundeck
+    image: nledez/rundeck:4.7.0
+    build:
+      context: .
+    links:
+      - consul
+      - ldap
+      - postgres
+      - ssh
+    environment:
+      - RUNDECK_CONSUL_HOST_PORT=consul:8500
+      - RUNDECK_DATABASE_DRIVER=org.postgresql.Driver
+      - RUNDECK_DATABASE_USERNAME=rundeck
+      - RUNDECK_DATABASE_PASSWORD=rundeck
+      - RUNDECK_DATABASE_URL=jdbc:postgresql://postgres/rundeck?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+      - RUNDECK_GRAILS_URL=http://127.0.0.1:4440
+      - RUNDECK_STORAGE_PASSWORD=storagepass
+      - RUNDECK_STORAGE_CONVERTER_1_CONFIG_PASSWORD=storagepass
+      - RUNDECK_CONFIG_STORAGE_CONVERTER_1_CONFIG_PASSWORD=storagepass
+      - RUNDECK_JAAS_MODULES_0=JettyCombinedLdapLoginModule
+      - RUNDECK_JAAS_LDAP_FLAG=sufficient
+      - RUNDECK_JAAS_LDAP_PROVIDERURL=ldap://ldap:389
+      - RUNDECK_JAAS_LDAP_BINDDN=cn=rundeck,ou=services,dc=acme,dc=com
+      - RUNDECK_JAAS_LDAP_BINDPASSWORD=rundeckpwd
+      - RUNDECK_JAAS_LDAP_USERBASEDN=ou=users,dc=acme,dc=com
+      - RUNDECK_JAAS_LDAP_ROLEBASEDN=ou=roles,dc=acme,dc=com
+      - RUNDECK_JAAS_MODULES_1=PropertyFileLoginModule
+      - RUNDECK_JAAS_FILE_FLAG=sufficient
+    volumes:
+      - ./data:/home/rundeck/server/data
+      - ./tests/ssh_client/id_rsa:/home/rundeck/.ssh/id_rsa
+      - ./tests/ssh_client/id_rsa.pub:/home/rundeck/.ssh/id_rsa.pub
+    ports:
+      - 4440:4440
+  postgres:
+    image: postgres
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_DB=rundeck
+      - POSTGRES_USER=rundeck
+      - POSTGRES_PASSWORD=rundeck
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+  ldap:
+    hostname: ldap
+    image: osixia/openldap:1.5.0
+    environment:
+      # - LDAP_LOG_LEVEL=4
+      - LDAP_ORGANISATION=RD Test
+      - LDAP_DOMAIN=acme.com
+      - LDAP_ADMIN_PASSWORD=AdminPass123
+    volumes:
+      - ./ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom:rw
+    ports:
+      - "389:389"
+    command: --copy-service --loglevel debug
+  consul:
+    hostname: consul
+    image: consul:1.9.4
+    command: "agent"
+    volumes:
+      - ./tests/consul/server.json:/consul/config/server.json:ro
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+  consul-seed:
+    hostname: consul-seed
+    image: nledez/wait-and-load:0.1.0
+    restart: "no"
+    environment:
+      - CONSUL_HTTP_ADDR=http://consul:8500
+      - CONSUL_LOAD_FROM=/seed.yml
+    volumes:
+      - ./consul/seed.yml:/seed.yml:ro
+    links:
+      - consul
+  ssh:
+    hostname: ssh-server
+    image: linuxkit/sshd:v0.8
+    volumes:
+      - ./tests/ssh_server/authorized_keys:/root/.ssh/authorized_keys
+
+volumes:
+  data:
+  dbdata:
