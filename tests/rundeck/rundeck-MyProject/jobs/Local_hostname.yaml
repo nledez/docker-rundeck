@@ -1,0 +1,19 @@
+- defaultTab: output
+  description: ''
+  executionEnabled: true
+  id: 326712ba-ef20-4998-948e-393f2359bccd
+  loglevel: INFO
+  name: Local hostname
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        command: hostname
+      nodeStep: true
+      type: localexec
+    keepgoing: false
+    strategy: node-first
+  uuid: 326712ba-ef20-4998-948e-393f2359bccd

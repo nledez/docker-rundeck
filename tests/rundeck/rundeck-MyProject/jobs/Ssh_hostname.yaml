@@ -1,0 +1,25 @@
+- defaultTab: output
+  description: ''
+  executionEnabled: true
+  id: 9d016f30-c44a-4786-8fba-d4ba21057766
+  loglevel: INFO
+  name: Ssh hostname
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ssh.*
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - exec: hostname
+    keepgoing: false
+    strategy: node-first
+  uuid: 9d016f30-c44a-4786-8fba-d4ba21057766

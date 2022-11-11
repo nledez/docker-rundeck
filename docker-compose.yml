@@ -18,6 +18,7 @@ services:
       - RUNDECK_DATABASE_PASSWORD=rundeck
       - RUNDECK_DATABASE_URL=jdbc:postgresql://postgres/rundeck?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
       - RUNDECK_GRAILS_URL=http://127.0.0.1:4440
+      - RUNDECK_SERVER_FORWARDED=false
       - RUNDECK_STORAGE_PASSWORD=storagepass
       - RUNDECK_STORAGE_CONVERTER_1_CONFIG_PASSWORD=storagepass
       - RUNDECK_CONFIG_STORAGE_CONVERTER_1_CONFIG_PASSWORD=storagepass
@@ -31,6 +32,7 @@ services:
       - RUNDECK_JAAS_MODULES_1=PropertyFileLoginModule
       - RUNDECK_JAAS_FILE_FLAG=sufficient
     volumes:
+      - ./tests/rundeck/:/home/rundeck/server/data
       - ./tests/ssh_client/id_rsa:/home/rundeck/.ssh/id_rsa
       - ./tests/ssh_client/id_rsa.pub:/home/rundeck/.ssh/id_rsa.pub
     ports:

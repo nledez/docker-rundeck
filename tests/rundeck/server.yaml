@@ -1,0 +1,10 @@
+ssh-server:
+  description: ssh-server
+  hostname: ssh-server
+  osArch: x86_64
+  osFamily: unix
+  osName: Linux
+  username: root
+  ssh-authentication: privatekey
+  node-executor: ssh-exec
+  file-copier: ssh-copier
