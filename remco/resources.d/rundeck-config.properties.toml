@@ -1,0 +1,11 @@
+[[template]]
+    src         = "${REMCO_TEMPLATE_DIR}/rundeck-config.properties"
+    dst         = "${RUNDECK_HOME}/server/config/rundeck-config.properties"
+    mode        = "0644"
+
+  [backend]
+    [backend.consul]
+      nodes = ["${RUNDECK_CONSUL_HOST_PORT}"]
+      onetime = true
+      interval = 1
+      keys = ["/"]
