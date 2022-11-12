@@ -3,7 +3,7 @@ version: '3'
 services:
   rundeck:
     hostname: rundeck
-    image: nledez/rundeck:4.7.0
+    image: nledez/rundeck:4.7.0-2
     build:
       context: .
     links:

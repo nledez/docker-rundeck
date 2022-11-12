@@ -1,8 +1,8 @@
 ### Rundeck source
-FROM rundeck/rundeck:4.7.0 as rundeck
+FROM --platform=linux/amd64 rundeck/rundeck:4.7.0 as rundeck
 
 ### Remco build
-FROM --platform=$BUILDPLATFORM golang:1.19.3 as remco
+FROM golang:1.19.3 as remco
 
 RUN cd /go/src && \
 	git clone https://github.com/HeavyHorst/remco.git && \
@@ -10,7 +10,7 @@ RUN cd /go/src && \
 	make build
 
 # My rundeck image
-FROM --platform=$BUILDPLATFORM ubuntu:20.04
+FROM ubuntu:20.04
 
 ARG TARGETOS TARGETPLATFORM TARGETARCH
 
