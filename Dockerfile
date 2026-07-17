@@ -1,5 +1,5 @@
 ### Rundeck source
-FROM --platform=linux/amd64 rundeck/rundeck:4.7.0 as rundeck
+FROM --platform=linux/amd64 rundeck/rundeck:4.14.2 as rundeck
 
 ### Remco build
 FROM golang:1.19.3 as remco

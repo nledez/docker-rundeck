@@ -40,7 +40,7 @@ Docker build and push
 =====================
 
 ```
-docker buildx build --push --platform=linux/amd64,linux/arm64 -t nledez/rundeck:4.7.0 .
+docker buildx build --push --platform=linux/amd64,linux/arm64 -t nledez/rundeck:4.14.2 -t nledez/rundeck:4.14.2-1 .
 ```
 
 Use with rundeck-cli
