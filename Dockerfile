@@ -2,10 +2,12 @@
 FROM --platform=linux/amd64 rundeck/rundeck:4.14.2 as rundeck
 
 ### Remco build
-FROM golang:1.19.3 as remco
+FROM golang:1.25.12 as remco
+
+ENV CGO_ENABLED=0
 
 RUN cd /go/src && \
-	git clone https://github.com/HeavyHorst/remco.git && \
+	git clone --branch v0.12.6 --depth 1 https://github.com/HeavyHorst/remco.git && \
 	cd remco && \
 	make build
 
@@ -69,7 +71,7 @@ RUN mkdir tempo && \
 	jar -xf ../rundeck.war WEB-INF/rundeck/plugins/ && \
 	zip -d ../rundeck.war WEB-INF/rundeck/plugins/\* && \
 	cd WEB-INF/rundeck/plugins && \
-	for f in *ansible* *aws* *azure* *py-winrm*; do test -f $f && rm $f; done && \
+	for f in *ansible* *aws* *azure* *py-winrm* *openssh-node-execution*; do test -f $f && rm $f; done && \
 	echo '#generated manifest' > manifest.properties && \
 	echo -n '# ' >> manifest.properties && \
 	date >> manifest.properties && \
@@ -81,6 +83,7 @@ RUN mkdir tempo && \
 	rm -rf tempo && \
 	mkdir .ssh
 ADD --chown=rundeck:root https://github.com/rundeck-plugins/slack-incoming-webhook-plugin/releases/download/v1.2.5/slack-incoming-webhook-plugin-1.2.5.jar /home/rundeck/libext/
+ADD --chown=rundeck:root https://github.com/rundeck-plugins/openssh-node-execution/releases/download/3.0.0/openssh-node-execution-3.0.0.zip /home/rundeck/libext/
 
 VOLUME ["/home/rundeck/server/data"]
 

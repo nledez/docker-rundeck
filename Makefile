@@ -1,7 +1,8 @@
 RUNDECK_VERSION := "4.14.2"
-DOCKER_VERSION := "${RUNDECK_VERSION}-1"
+DOCKER_VERSION := "${RUNDECK_VERSION}-3"
 DOCKER_NAME := "rundeck"
 DOCKER_IMAGE := "nledez/${DOCKER_NAME}:${DOCKER_VERSION}"
+DOCKER_BUILDER := "${DOCKER_NAME}-multiarch"
 
 all: build push push_consul_version
 
@@ -22,9 +23,14 @@ kill_standalone:
 build:
 	docker build -t ${DOCKER_IMAGE} .
 
+.PHONY: builder
+builder:
+	docker buildx inspect ${DOCKER_BUILDER} >/dev/null 2>&1 || \
+		docker buildx create --name ${DOCKER_BUILDER} --driver docker-container --bootstrap
+
 .PHONY: push
-push:
-	docker buildx build --push --platform=linux/amd64,linux/arm64 -t ${DOCKER_IMAGE} .
+push: builder
+	docker buildx build --builder ${DOCKER_BUILDER} --push --platform=linux/amd64,linux/arm64 -t ${DOCKER_IMAGE} .
 
 .PHONY: push_consul_version
 push_consul_version:
